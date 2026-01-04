@@ -1,36 +1,45 @@
+# 显示在主页和归档页面上的部分
 # Pages placed under these sections will be shown on homepage and archive page.
 mainSections = ["post"]
+
+# 在RSS中输出完整页面内容
 # Output page's full content in RSS.
 rssFullContent = true
 favicon = "/favicon.png"
 
+# 页脚配置
 [footer]
-since = 2020
-customText = ""
+since = 2026
+customText = "新的一年，新的开始。"
 
+# 日期格式配置
 [dateFormat]
 published = "Jan 02, 2006"
 lastUpdated = "Jan 02, 2006 15:04 MST"
 
+# 侧边栏配置
 [sidebar]
 emoji = "🍥"
 subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 
+# 头像配置
 [sidebar.avatar]
 enabled = true
 local = true
 src = "img/avatar.png"
 
+# 文章配置
 [article]
 headingAnchor = false
 math = false
 readingTime = true
 
+# 文章许可证配置
 [article.license]
 enabled = true
 default = "Licensed under CC BY-NC-SA 4.0"
 
-## Widgets
+## 主页小部件配置
 [[widgets.homepage]]
 type = "search"
 
@@ -52,33 +61,39 @@ type = "tag-cloud"
 [widgets.homepage.params]
 limit = 10
 
+# 页面小部件配置
 [[widgets.page]]
 type = "toc"
 
+# OpenGraph和Twitter配置
 [opengraph.twitter]
 site = ""
 card = "summary_large_image"
 
+# 默认OG图像配置
 [defaultImage.opengraph]
 enabled = false
 local = false
 src = ""
 
+# 颜色主题配置
 [colorScheme]
 toggle = true
 default = "auto"
 
+# 图像处理配置
 [imageProcessing.cover]
 enabled = true
 
 [imageProcessing.content]
 enabled = true
 
-## Comments
+## 评论系统配置
 [comments]
 enabled = true
 provider = "disqus"
 
+# Disqus评论配置
 [comments.disqusjs]
 shortname = ""
 apiUrl = ""
@@ -86,16 +101,19 @@ apiKey = ""
 admin = ""
 adminLabel = ""
 
+# Utterances评论配置
 [comments.utterances]
 repo = ""
 issueTerm = "pathname"
 label = ""
 
+# Remark42评论配置
 [comments.remark42]
 host = ""
 site = ""
 locale = ""
 
+# Vssue评论配置
 [comments.vssue]
 platform = ""
 owner = ""
@@ -104,6 +122,7 @@ clientId = ""
 clientSecret = ""
 autoCreateIssue = false
 
+# Waline评论配置
 [comments.waline]
 serverURL = ""
 lang = ""
@@ -116,17 +135,20 @@ placeholder = ""
 [comments.waline.locale]
 admin = "Admin"
 
+# Twikoo评论配置
 [comments.twikoo]
 envId = ""
 region = ""
 path = ""
 lang = ""
 
+# Cactus评论配置
 [comments.cactus]
 defaultHomeserverUrl = "https://matrix.cactus.chat:8448"
 serverName = "cactus.chat"
 siteName = ""
 
+# Giscus评论配置
 [comments.giscus]
 repo = ""
 repoID = ""
@@ -138,6 +160,7 @@ darkTheme = ""
 reactionsEnabled = 1
 emitMetadata = 0
 
+# Gitalk评论配置
 [comments.gitalk]
 owner = ""
 admin = ""
@@ -145,6 +168,7 @@ repo = ""
 clientID = ""
 clientSecret = ""
 
+# Cusdis评论配置
 [comments.cusdis]
 host = ""
 id = ""
