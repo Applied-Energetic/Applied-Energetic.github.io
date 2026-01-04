@@ -60,3 +60,8 @@ hugo config
 - `-E`: 包含已过期的文章。
 - `--gc`: 构建后运行垃圾回收 (清理未使用的缓存)。
 - `--cleanDestinationDir`: 构建前清理目标目录 (慎用)。
+
+## 自定义
+
+### 图标
+https://tabler.io/icons
