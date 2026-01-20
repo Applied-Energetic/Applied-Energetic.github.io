@@ -1,11 +1,11 @@
 # 显示在主页和归档页面上的部分
 # Pages placed under these sections will be shown on homepage and archive page.
-mainSections = ["post"]
+mainSections = ["posts"]
 
 # 在RSS中输出完整页面内容
 # Output page's full content in RSS.
 rssFullContent = true
-favicon = "/favicon.png"
+favicon = "/logo.jpg"
 
 # 页脚配置
 [footer]

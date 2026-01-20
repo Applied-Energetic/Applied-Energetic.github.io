@@ -1,0 +1,67 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "previewPath": null,
+      "fields": [
+        {
+          "title": "title",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "title": "description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "date",
+          "name": "date",
+          "type": "datetime"
+        },
+        {
+          "title": "image",
+          "name": "image",
+          "type": "image"
+        },
+        {
+          "title": "math",
+          "name": "math",
+          "type": "datetime"
+        },
+        {
+          "title": "license",
+          "name": "license",
+          "type": "datetime"
+        },
+        {
+          "title": "hidden",
+          "name": "hidden",
+          "type": "boolean"
+        },
+        {
+          "title": "comments",
+          "name": "comments",
+          "type": "boolean"
+        },
+        {
+          "title": "draft",
+          "name": "draft",
+          "type": "draft"
+        },
+        {
+          "title": "preview",
+          "name": "preview",
+          "type": "string"
+        },
+        {
+          "title": "fmContentType",
+          "name": "fmContentType",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "frontMatter.framework.id": "hugo",
+    "frontMatter.content.publicFolder": "static",
+    "frontMatter.preview.host": "http://localhost:1313",
+    "frontMatter.git.enabled": true,
+    "frontMatter.content.pageFolders": [
+        {
+            "path": "[[workspace]]/content"
+        },
+        {
+            "path": "[[workspace]]/content/posts/第一篇博客"
+        }
+    ],
+    "[markdown]": {
+    }
+}
