@@ -9,6 +9,9 @@
         },
         {
             "path": "[[workspace]]/content/posts/第一篇博客"
+        },
+        {
+            "path": "[[workspace]]/content/posts"
         }
     ],
     "[markdown]": {

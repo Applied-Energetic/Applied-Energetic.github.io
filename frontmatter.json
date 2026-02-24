@@ -7,24 +7,41 @@
       "previewPath": null,
       "fields": [
         {
-          "title": "title",
+          "title": "Title",
           "name": "title",
           "type": "string"
         },
         {
-          "title": "description",
+          "title": "Description",
           "name": "description",
           "type": "string"
         },
         {
-          "title": "date",
+          "title": "Publishing date",
           "name": "date",
-          "type": "datetime"
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
         },
         {
-          "title": "image",
-          "name": "image",
+          "title": "Content preview",
+          "name": "preview",
           "type": "image"
+        },
+        {
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "draft"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
         },
         {
           "title": "math",
@@ -47,21 +64,22 @@
           "type": "boolean"
         },
         {
-          "title": "draft",
-          "name": "draft",
-          "type": "draft"
-        },
-        {
-          "title": "preview",
-          "name": "preview",
-          "type": "string"
-        },
-        {
           "title": "fmContentType",
           "name": "fmContentType",
           "type": "string"
+        },
+        {
+          "title": "image",
+          "name": "image",
+          "type": "image"
         }
       ]
+    }
+  ],
+  "frontMatter.content.pageFolders": [
+    {
+      "path": "[[workspace]]/content",
+      "title": "content"
     }
   ]
 }
