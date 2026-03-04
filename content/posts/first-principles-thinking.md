@@ -8,7 +8,7 @@ license: null
 hidden: false
 comments: true
 fmContentType: default
-image: /picture/047ffc52b32b4988bdcc4a5808c6866d.jpg
+image: /picture/stroll_on_the_beach.jpg
 ---
 
 # 少犯错：AI 时代的第一性原理思维
