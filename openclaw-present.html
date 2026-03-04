@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Claw - AI 编程助手完全指南</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================== VIEWPORT FITTING: MANDATORY BASE STYLES =========================================== */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; }
+.slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; max-height: 100%; overflow: hidden; padding: var(--slide-padding); }
+:root { --title-size: clamp(2rem, 6vw, 5rem); --h2-size: clamp(1.5rem, 3.5vw, 3rem); --h3-size: clamp(1.1rem, 2.5vw, 2rem); --body-size: clamp(0.9rem, 1.5vw, 1.2rem); --small-size: clamp(0.85rem, 1.2vw, 1rem); --slide-padding: clamp(1.5rem, 4vw, 4rem); --content-gap: clamp(0.5rem, 2vw, 2rem); }
+.card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 1.5rem; }
+/* =========================================== THEME: Light Terminal Style =========================================== */
+:root { --bg-primary: #ffffff; --bg-secondary: #f8f9fa; --bg-tertiary: #f1f3f4; --accent-green: #00c853; --accent-green-dim: #00a844; --accent-blue: #2196f3; --text-primary: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #9aa0a6; --border-color: #e8eaed; --code-bg: #f5f5f5; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans SC', 'JetBrains Mono', monospace; background: var(--bg-primary); color: var(--text-primary); line-height: 1.5; }
+/* Animations */
+.reveal { opacity: 0; transform: translateY(25px); transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(1) { transition-delay: 0.1s; }
+.reveal:nth-child(2) { transition-delay: 0.2s; }
+.reveal:nth-child(3) { transition-delay: 0.3s; }
+.reveal:nth-child(4) { transition-delay: 0.4s; }
+/* Terminal Header */
+.terminal-bar { position: absolute; top: 0; left: 0; right: 0; height: 32px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 12px; gap: 8px; z-index: 10; }
+.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+.terminal-title { margin-left: 12px; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono'; }
+/* Background */
+.grid-bg { position: absolute; top: 32px; bottom: 0; left: 0; right: 0; background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px); background-size: 30px 30px; opacity: 0.4; pointer-events: none; z-index: 0; }
+/* Typography */
+h1 { font-size: var(--title-size); font-weight: 700; margin-bottom: 0.5rem; line-height: 1.1; }
+h2 { font-size: var(--h2-size); font-weight: 700; margin-bottom: 1rem; }
+h3 { font-size: var(--h3-size); font-weight: 600; margin-bottom: 0.5rem; color: var(--accent-green-dim); }
+p, li { font-size: var(--body-size); color: var(--text-secondary); }
+ul { padding-left: 1.2rem; }
+.subtitle { font-size: var(--h3-size); color: var(--accent-green); font-weight: 600; }
+.tagline { font-size: var(--body-size); color: var(--text-muted); }
+/* Highlight & Badges */
+.highlight { color: var(--accent-green); font-weight: 600; }
+.badge { display: inline-block; padding: 0.2rem 0.5rem; background: var(--accent-green); color: white; font-size: 0.8rem; border-radius: 4px; margin-right: 0.5rem; }
+.badge-outline { background: transparent; border: 1px solid var(--accent-green); color: var(--accent-green-dim); }
+/* Tables - Increased Font Size */
+.table-wrapper { overflow-x: auto; margin: 1rem 0; border-radius: 8px; border: 1px solid var(--border-color); background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; }
+th { background: var(--bg-secondary); font-weight: 600; text-align: left; padding: 0.8rem; color: var(--text-primary); }
+td { padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-tertiary); }
+/* Special Layouts */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.section-num { position: absolute; bottom: 20px; right: 20px; font-size: 4rem; font-weight: 700; color: #f0f0f0; font-family: 'JetBrains Mono'; pointer-events: none; }
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .hide-mobile { display: none; } }
+</style>
+</head>
+<body>
+<!-- =========================================== SLIDE 1: Title =========================================== -->
+<section class="slide" id="slide1">
+<div class="terminal-bar"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span><span class="terminal-title">openclaw — bash</span></div>
+<div class="grid-bg"></div>
+<div class="slide-content" style="justify-content: center; padding-left: 10vw;">
+<p class="reveal" style="color: var(--accent-green); font-family: 'JetBrains Mono'; margin-bottom: 0.5rem;">❯ ./start_presentation.sh</p>
+<h1 class="reveal">Open Claw</h1>
+<p class="subtitle reveal">AI 编程助手完全指南</p>
+<p class="tagline reveal" style="max-width: 600px;">从部署配置到企业级应用，掌握下一代智能开发工具。</p>
+<div class="reveal" style="margin-top: 3rem;">
+<span class="badge badge-outline">Latest v2.4</span>
+<span class="badge badge-outline">MIT License</span>
+</div>
+</div>
+<div class="section-num">01</div>
+</section>
+<!-- =========================================== SLIDE 2: 部署与配置 (Merged) =========================================== -->
+<section class="slide" id="slide2">
+<div class="terminal-bar"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span><span class="terminal-title">config_setup.sh</span></div>
+<div class="grid-bg"></div>
+<div class="slide-content">
+<h2 class="reveal">🛠️ 部署与环境配置</h2>
+<div class="grid">
+<div class="card reveal">
+<h3>🖥️ 部署平台</h3>
+<ul style="list-style: none; padding: 0;">
+<li><strong>☁️ 云端:</strong> 阿里云 (国内首选), MaxClaw (托管)</li>
+<li><strong>💻 本地:</strong> Mac (推荐), RTX 4080+ (Windows)</li>
+</ul>
+</div>
+<div class="card reveal">
+<h3>🔐 成本与安全</h3>
+<ul style="list-style: none; padding: 0;">
+<li><strong>⚠️ 隐患:</strong> API Key 管理, Token 泄露</li>
+<li><strong>💰 成本:</strong> 云服务器 ¥100-500/月</li>
+</ul>
+</div>
+<div class="card reveal">
+<h3>📱 Channel 渠道</h3>
+<ul style="list-style: none; padding: 0;">
+<li><strong>🇨🇳 国内:</strong> 飞书, 微信企业版, 钉钉</li>
+<li><strong>🌏 国外:</strong> Discord, Telegram</li>
+</ul>
+</div>
+<div class="card reveal">
+<h3>⚙️ 核心配置</h3>
+<ul style="list-style: none; padding: 0;">
+<li><strong>端口:</strong> 放行 18789 • <strong>补丁:</strong> Claw Doctor</li>
+<li><strong>插件:</strong> ClawHub (Skill 市场)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section-num">02</div>
+</section>
+<!-- =========================================== SLIDE 3: 生态与发行版 (Merged) =========================================== -->
+<section class="slide" id="slide3">
+<div class="terminal-bar"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span><span class="terminal-title">ecosystem_distros.py</span></div>
+<div class="grid-bg"></div>
+<div class="slide-content">
+<h2 class="reveal">🌍 OpenClaw 生态与发行版</h2>
+<div style="display: flex; gap: 2rem; height: 75vh; align-items: flex-start;">
+<!-- Left: Image & Badges -->
+<div class="reveal" style="flex: 1; display: flex; flex-direction: column; gap: 1rem;">
+<div style="background: white; padding: 0.5rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<img src="Open%20Claw%E5%88%86%E4%BA%AB-1772626713540.png" alt="生态演进" style="width: 100%; height: auto; border-radius: 4px;">
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+<span class="badge badge-outline">OpenClaw</span>
+<span class="badge badge-outline">NanoClaw</span>
+<span class="badge badge-outline">ZeroClaw</span>
+<span class="badge badge-outline">PicoClaw</span>
+<span class="badge badge-outline">IronClaw</span>
+</div>
+</div>
+<!-- Right: Comparison Table -->
+<div class="reveal table-wrapper" style="flex: 1.4; margin: 0; overflow-y: auto;">
+<table style="width: 100%;">
+<thead>
+<tr>
+<th>发行版</th>
+<th>语言</th>
+<th>最佳场景</th>
+<th>安全模型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenClaw</strong></td>
+<td>TS</td>
+<td>全功能生产力</td>
+<td>应用层控制</td>
+</tr>
+<tr>
+<td><strong>NanoClaw</strong></td>
+<td>TS</td>
+<td>多租户集群</td>
+<td>容器级隔离</td>
+</tr>
+<tr>
+<td><strong>ZeroClaw</strong></td>
+<td>Rust</td>
+<td>IoT / 极客设备</td>
+<td>内存安全</td>
+</tr>
+<tr>
+<td><strong>PicoClaw</strong></td>
+<td>Go</td>
+<td>嵌入式开发</td>
+<td>无OS依赖</td>
+</tr>
+<tr>
+<td><strong>IronClaw</strong></td>
+<td>Rust</td>
+<td>金融/机密数据</td>
+<td>TEE硬件加密</td>
+</tr>
+<tr>
+<td><strong>Nanobot</strong></td>
+<td>Py</td>
+<td>MCP学习</td>
+<td>代码透明</td>
+</tr>
+</tbody>
+</table>
+<p style="font-size: 0.8rem; margin: 0.5rem; color: var(--text-muted);">* 涵盖从 430k+ 行代码的全能版到 <5MB 的 Rust 极简版</p>
+</div>
+</div>
+</div>
+<div class="section-num">03</div>
+</section>
+<!-- =========================================== SLIDE 4: 模型策略与成本 (Merged) =========================================== -->
+<section class="slide" id="slide4">
+<div class="terminal-bar"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span><span class="terminal-title">models_ranking.json</span></div>
+<div class="grid-bg"></div>
+<div class="slide-content">
+<h2 class="reveal">🧠 核心模型策略 (2026)</h2>
+<div class="reveal card" style="margin-bottom: 1.5rem; background: rgba(0,200,83,0.08); border-left: 5px solid var(--accent-green);">
+<p><strong>💡 推荐组合:</strong> 主力构建使用 <span class="highlight">Qwen-3-Max</span> (高性价比)，复杂逻辑交给 <span class="highlight">o3</span> (攻坚)，日常交互用 <span class="highlight">MiniMax</span>。</p>
+</div>
+<div class="table-wrapper reveal">
+<table>
+<thead>
+<tr>
+<th style="width: 15%">厂商</th>
+<th style="width: 20%">核心模型</th>
+<th style="width: 20%">LMSYS 排名</th>
+<th style="width: 25%">综合定位</th>
+<th style="width: 20%">成本 (RMB/M)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAI</strong></td>
+<td>o3</td>
+<td><strong>#1 (1435)</strong></td>
+<td><strong>攻坚专家</strong></td>
+<td>~60 元</td>
+</tr>
+<tr>
+<td><strong>Anthropic</strong></td>
+<td>Claude 3.7</td>
+<td><strong>#2 (1412)</strong></td>
+<td><strong>架构师</strong></td>
+<td>~45 元</td>
+</tr>
+<tr>
+<td><strong>DeepSeek</strong></td>
+<td>R1 (V3)</td>
+<td><strong>#3 (1389)</strong></td>
+<td><strong>审计专家</strong></td>
+<td>~2 元</td>
+</tr>
+<tr>
+<td><strong>Alibaba</strong></td>
+<td>Qwen-3-Max</td>
+<td><strong>#4 (1365)</strong></td>
+<td><strong>全能Builder</strong></td>
+<td>~3.5 元</td>
+</tr>
+<tr>
+<td><strong>Zhipu</strong></td>
+<td>GLM-5</td>
+<td><strong>#6 (1342)</strong></td>
+<td><strong>Agent专家</strong></td>
+<td>~10 元</td>
+</tr>
+<tr>
+<td><strong>MiniMax</strong></td>
+<td>M2.5</td>
+<td><strong>#12 (1298)</strong></td>
+<td><strong>极速交互</strong></td>
+<td>< 0.15 元</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section-num">04</div>
+</section>
+<!-- =========================================== SLIDE 5: 应用实战 (Merged) =========================================== -->
+<section class="slide" id="slide5">
+<div class="terminal-bar"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span><span class="terminal-title">showcase_gallery.sh</span></div>
+<div class="grid-bg"></div>
+<div class="slide-content">
+<h2 class="reveal">🚀 应用实战与案例</h2>
+<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; height: 65vh;">
+<!-- Left: Use Cases List -->
+<div class="grid" style="grid-template-columns: 1fr; align-content: start; gap: 1rem;">
+<div class="card reveal">
+<h3>🔄 自我进化</h3>
+<p>Agent 自我优化路径，持续学习</p>
+</div>
+<div class="card reveal">
+<h3>📝 实习生日报</h3>
+<p>自动化生成工作总结，格式标准化</p>
+</div>
+<div class="card reveal">
+<h3>🌐 博客自动化</h3>
+<p>自动部署、内容更新维护</p>
+</div>
+<div class="card reveal">
+<h3>📈 美股分析</h3>
+<p>市场数据挖掘与基金助手</p>
+</div>
+</div>
+<!-- Right: Images Grid -->
+<div class="reveal" style="display: flex; flex-direction: column; gap: 1rem; overflow-y: auto;">
+<div style="text-align: center; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+<span class="badge" style="margin-bottom: 0.5rem; display: block;">自我进化路径</span>
+<img src="Open%20Claw%E5%88%86%E4%BA%AB-1772626420392.png" alt="自我进化" style="width: 100%; border-radius: 4px;">
+</div>
+<div style="text-align: center; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+<span class="badge" style="margin-bottom: 0.5rem; display: block;">日报生成示例</span>
+<img src="Open%20Claw%E5%88%86%E4%BA%AB-1772626883390.png" alt="实习生日报" style="width: 100%; border-radius: 4px;">
+</div>
+</div>
+</div>
+</div>
+<div class="section-num">05</div>
+</section>
+<!-- =========================================== SLIDE 6: 总结 =========================================== -->
+<section class="slide" id="slide6">
+<div class="terminal-bar"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span><span class="terminal-title">exit_process.sh</span></div>
+<div class="grid-bg"></div>
+<div class="slide-content" style="text-align: center; align-items: center; justify-content: center;">
+<p class="reveal" style="color: var(--accent-green); font-family: 'JetBrains Mono'; margin-bottom: 1rem; font-size: 1.2rem;">❯ echo $?</p>
+<h1 class="reveal" style="font-size: 5rem;">Thanks!</h1>
+<p class="subtitle reveal" style="font-size: 2rem;">Open Claw - 让编程更智能</p>
+<div class="reveal" style="margin-top: 4rem; display: flex; gap: 3rem; justify-content: center;">
+<div class="card" style="padding: 2rem; min-width: 200px;">
+<h3 style="font-size: 1.5rem;">🔗 GitHub</h3>
+<p>openclaw/openclaw</p>
+</div>
+<div class="card" style="padding: 2rem; min-width: 200px;">
+<h3 style="font-size: 1.5rem;">💬 Q&A</h3>
+<p>互动环节</p>
+</div>
+</div>
+</div>
+<div class="section-num">06</div>
+</section>
+<!-- Controller Script -->
+<script>
+class SlidePresentation {
+constructor() {
+this.slides = document.querySelectorAll('.slide');
+this.currentSlide = 0;
+this.setupObserver();
+this.setupKeyboard();
+}
+setupObserver() {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(e => {
+if (e.isIntersecting) {
+e.target.classList.add('visible');
+this.currentSlide = Array.from(this.slides).indexOf(e.target);
+}
+});
+}, { threshold: 0.5 });
+this.slides.forEach(s => observer.observe(s));
+}
+setupKeyboard() {
+document.addEventListener('keydown', (e) => {
+if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+if (this.currentSlide < this.slides.length - 1) {
+this.slides[this.currentSlide + 1].scrollIntoView({ behavior: 'smooth' });
+e.preventDefault();
+}
+} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+if (this.currentSlide > 0) {
+this.slides[this.currentSlide - 1].scrollIntoView({ behavior: 'smooth' });
+e.preventDefault();
+}
+});
+}
+}
+new SlidePresentation();
+</script>
+</body>
+</html>
