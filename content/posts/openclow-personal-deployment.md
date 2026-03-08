@@ -8,7 +8,7 @@ license: false
 hidden: false
 comments: true
 fmContentType: default
-image: /picture/openclaw-cover.jpg
+image: /picture/dark-landscape.jpg
 tags: ["OpenClaw", "AI", "部署", "教程"]
 categories: ["AI工具"]
 ---
